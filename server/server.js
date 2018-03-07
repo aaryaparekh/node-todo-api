@@ -14,6 +14,8 @@ var app = express();
 //Middlewear
 app.use(bodyParser.json());
 
+const port = process.env.PORT || 3000;
+
 //Send the data to server (doesn't do anything with it yet)
 app.post('/todos', (req, res)=>{
   var todo = new Todo({             //Use the Todo model
@@ -37,7 +39,7 @@ app.get('/todos', (req, res) => {
   });
 });
 
-app.listen(3000, ()=> {
+app.listen(port, ()=> {
   console.log('Started on port 3000');
 });
 
