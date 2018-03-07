@@ -14,18 +14,31 @@ var app = express();
 //Middlewear
 app.use(bodyParser.json());
 
+//Send the data to server (doesn't do anything with it yet)
 app.post('/todos', (req, res)=>{
   var todo = new Todo({             //Use the Todo model
-    text: req.body.text
-  });
+    text: req.body.text             //Uses the req.body object, looks for a property called text, and passes it
+  });                               //Note: The actual req.body.text value is defined by something that is trying to post data to this server
 
+  //save the data to mongodb by using the .save()
   todo.save().then((doc)=>{
     res.send(doc);                  //If all goes well
   }, (e)=>{
-    res.status(400).send(e);                    //If there was an error, also send back a status of 400.
+    res.status(400).send(e);        //If there was an error, also send back a status of 400.
+  });
+});
+
+//Get request
+app.get('/todos', (req, res) => {
+  Todo.find().then((todos)=>{
+    res.send({todos});
+  }, (e)=>{
+    res.status(400).send(e);
   });
 });
 
 app.listen(3000, ()=> {
   console.log('Started on port 3000');
 });
+
+module.exports = {app};
