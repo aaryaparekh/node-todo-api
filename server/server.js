@@ -33,7 +33,7 @@ app.post('/todos', (req, res)=>{
   todo.save().then((doc)=>{
     res.send(doc);                  //If all goes well
   }, (e)=>{
-    res.status(400).send(e);        //If there was an error, also send back a status of 400.
+    res.status(400).send(e +' , in other words: something wrong with the data you are sending.');        //If there was an error, also send back a status of 400.
   });
 });
 
