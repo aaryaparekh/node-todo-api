@@ -77,13 +77,13 @@
     };
 
     // This is a POST request
-    var makeAPI2Request = function() {
+    var makeAPI2Request = function(var userInput) {
       $.ajax({
         url: "https://murmuring-woodland-62196.herokuapp.com/todos",
         type: "POST",
         headers: reqHeaders,
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({text: document.getElementById('userInput')}),
+        data: JSON.stringify({text: userInput}),
         dataType: "json",
         success: function(data) {
           console.log(data);
@@ -100,7 +100,8 @@
     });
 
     apiBtn2.click(function(e) {
-      makeAPI2Request();
+      var userInput = document.getElementById('userInput')
+      makeAPI2Request(userInput);
     });
   </script>
 </body>
