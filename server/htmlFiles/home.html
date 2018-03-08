@@ -69,14 +69,14 @@
         url: "https://murmuring-woodland-62196.herokuapp.com/todos",
         type: "POST",
         headers: reqHeaders,
-        data: JSON.stringify({text: "is this thing even on...?"}),
+        data: JSON.stringify({"text": "is this thing even on...?"}),
         dataType: "json",
         success: function(data) {
           console.log(data);
           responseDiv.html(JSON.stringify(data, undefined, 2));
         },
         error: function() {
-          responseDiv.html("error with post");
+          responseDiv.html("error with post...");
         }
       });
     };
