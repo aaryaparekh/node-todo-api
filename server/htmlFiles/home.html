@@ -67,11 +67,9 @@
     var makeAPI2Request = function() {
       $.ajax({
         url: "https://murmuring-woodland-62196.herokuapp.com/todos",
-        method: "POST",
+        type: "POST",
         headers: reqHeaders,
-        data: {
-            text:"hello is this thing on?"
-        },
+        data: JSON.stringify({text: "is this thing even on...?"}),
         dataType: "json",
         success: function(data) {
           console.log(data);
