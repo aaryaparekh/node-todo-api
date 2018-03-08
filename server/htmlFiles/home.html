@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<title>API: Test</title>
+<head>
+
+  <script
+    src="http://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
+  <style>
+  #response-section {
+    border: 1px solid black;
+    min-height: 100px;
+    min-width: 200px;
+    margin: 10px;
+    padding: 10px;
+  }
+  input[type=button] {
+    background-color: #da4519;
+    color: #ffffff;
+    padding: 5px 10px;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  input[type=button]:hover {
+    cursor: pointer;
+  }
+  </style>
+</head>
+<body>
+  <h1>Test APIs</h1>
+  <h3>API I</h3>
+  <input type="button" id="api-btn-1" value="Get Api I"/>
+  <h3>API II</h3>
+  <input type="button" id="api-btn-2" value="Get Api II"/>
+  <pre id="response-section"></pre>
+  <script>
+    var apiBtn1 = $("#api-btn-1");
+    var apiBtn2 = $("#api-btn-2");
+
+    // If your API needs headers, add them here as JSON key-value pairs
+    var reqHeaders = {
+        "Access-Control-Allow-Headers": "x-requested-with"
+    };
+
+    var responseDiv = $("#response-section");
+
+    // This is a GET request
+    var makeAPI1Request = function(flairType) {
+      $.ajax({
+        method: "GET",
+        url: "https://murmuring-woodland-62196.herokuapp.com/todos",
+        headers: reqHeaders,
+        success: function(data) {
+          console.log(data);
+          responseDiv.html(JSON.stringify(data, undefined, 2));
+        },
+        error: function() {
+          responseDiv.html("error something isnt right");
+        }
+      });
+    };
+
+    // This is a POST request
+    var makeAPI2Request = function() {
+      $.ajax({
+        url: "https://murmuring-woodland-62196.herokuapp.com/todos",
+        method: "POST",
+        headers: reqHeaders,
+        data: {
+            "text":"hello is this thing on?"
+        },
+        dataType: "json",
+        success: function(data) {
+          console.log(data);
+          responseDiv.html(JSON.stringify(data, undefined, 2));
+        },
+        error: function() {
+          responseDiv.html("error");
+        }
+      });
+    };
+
+    apiBtn1.click(function(e) {
+      makeAPI1Request();
+//        $.get(URL, function(data){
+//            console.log(data);
+//            responseDiv.html(JSON.stringify(data, undefined, 2));
+//        });
+    });
+
+    apiBtn2.click(function(e) {
+      makeAPI2Request();
+    });
+  </script>
+</body>
+</html>

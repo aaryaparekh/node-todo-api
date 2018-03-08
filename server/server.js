@@ -13,8 +13,15 @@ var app = express();
 
 //Middlewear
 app.use(bodyParser.json());
+//Middlewear to load static files for rendering such as home.html
+app.use(express.static(__dirname+'/htmlFiles'))
 
 const port = process.env.PORT || 3000;
+
+//Render the home page
+app.get('/', (req, res) => {
+  res.sendFile(__dirname+'/htmlFiles/home.html');
+});
 
 //Send the data to server (doesn't do anything with it yet)
 app.post('/todos', (req, res)=>{
