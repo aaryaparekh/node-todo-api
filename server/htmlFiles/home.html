@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <title>API: Test</title>
-<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
+//USE THIS:
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <head>
 
   <script
@@ -43,7 +44,6 @@
 
     // If your API needs headers, add them here as JSON key-value pairs
     var reqHeaders = {
-        "Access-Control-Allow-Headers": "x-requested-with"
     };
 
     var responseDiv = $("#response-section");
@@ -79,17 +79,13 @@
           responseDiv.html(JSON.stringify(data, undefined, 2));
         },
         error: function() {
-          responseDiv.html("error");
+          responseDiv.html("error with post");
         }
       });
     };
 
     apiBtn1.click(function(e) {
       makeAPI1Request();
-//        $.get(URL, function(data){
-//            console.log(data);
-//            responseDiv.html(JSON.stringify(data, undefined, 2));
-//        });
     });
 
     apiBtn2.click(function(e) {
