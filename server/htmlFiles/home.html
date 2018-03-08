@@ -32,11 +32,24 @@
 </head>
 <body>
   <h1>Test APIs</h1>
-  <h3>API I</h3>
-  <input type="button" id="api-btn-1" value="Get Api I"/>
-  <h3>API II</h3>
-  <input type="button" id="api-btn-2" value="Get Api II"/>
+  <h3>This is the GET method.</h3>
+  <p>It will show all the things in the database.</p>
+  <input type="button" id="api-btn-1" value="GET"/>
+
+  <h3>This is the POST method.</h3>
+  <p>It will post things into the database.</p>
+  <input type="text" value="Type something in here to post to database." id="userInput">
+  <input type="button" id="api-btn-2" value="POST"/>
+
+  <h4>This is something like a console, just for debuging purposes</h4>
   <pre id="response-section"></pre>
+  <h5>Database:</h5>
+  <a href="https://murmuring-woodland-62196.herokuapp.com/todos">Click Me.</a>
+  <h6>Behind the scenes:</h6>
+  <p>When you post something, all you get to control is the 'text' value.</p>
+  <p>I have configured the database in such a way that it creates a '_id' value which is an encrypted unique id</p>
+  <p>This unique id allows you to reference that specific document.</p>
+  <p>The _id value also has the time and date that the doc was created encrypted into it.</p>
   <script>
     var apiBtn1 = $("#api-btn-1");
     var apiBtn2 = $("#api-btn-2");
