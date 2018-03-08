@@ -67,10 +67,10 @@
     var makeAPI2Request = function() {
       $.ajax({
         url: "https://murmuring-woodland-62196.herokuapp.com/todos",
-        type: "POST",
+        method: "POST",
         headers: reqHeaders,
         data: {
-            "text":"hello is this thing on?"
+            text:"hello is this thing on?"
         },
         dataType: "json",
         success: function(data) {
