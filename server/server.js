@@ -1,6 +1,7 @@
 //Import Libraries
-var express = require('express');
-var bodyParser = require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
+const _=require('lodash');
 
 //Import local stuff
 //REquire the mongoose config file
@@ -61,6 +62,51 @@ app.get('/todos/:id', (req, res)=>{
       }
     })
   }
+});
+
+app.delete('/todos/:id', (req, res)=>{
+  var id = req.params.id;
+  if(!ObjectID.isValid(id)){
+    res.status(404).send();
+  }else{
+    Todo.findByIdAndRemove(id).then((todo)=>{
+      if(!todo){
+        res.status(400).send();
+      }else{
+        res.send(todo);
+      }
+    });
+  }
+});
+
+app.patch('/todos/:id', (req, res)=>{
+  var id = req.params.id;
+  var body = _.pick(req.body, ['text', 'completed']); //Use lodash to pull out specific properties from the info the user is sending to update the todo
+
+  if(!ObjectID.isValid(id)){
+    res.status(404).send();
+  }
+
+  if(_.isBoolean(body.completed) && body.completed){
+    body.completedAt = new Date().getTime();          //Add a new comepletedAt time if user wants the updated todo to already be completed
+  }else{
+    body.completed = false;
+    body.completedAt = null;
+  }
+
+  //For updating, you have to use mongoose operators to query
+  Todo.findByIdAndUpdate(id, {$set: body}, {new: true}).then((todo)=>{  //Query explained: (id u want to search for, what you want it to be, return back new one)
+    if(!todo){
+      return res.status(404).send();
+    }
+
+    res.send({todo}); //send back object called todo with the values of todo that we go back from the callback
+
+
+  }).catch((e)=>{
+    res.status(400).send();
+  });
+
 });
 
 app.listen(port, ()=> {
