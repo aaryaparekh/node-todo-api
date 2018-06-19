@@ -12,6 +12,7 @@ var {Todo} = require('./models/todo');
 var {User}= require('./models/user');
 //middlewear
 var {authenticate} = require('./middlewear/authenticate');
+
 var app = express();
 
 //Middlewear
@@ -112,7 +113,7 @@ app.patch('/todos/:id', (req, res)=>{
 //Registering a NEW User
 app.post('/users', (req, res) => {
   var body = _.pick(req.body, ['email', 'password']); //lodash library to make a new object called body, contains the email and password values from 'req.body' (which is what the users input is stored in)
-  //already instatieted the users model at the top of this file
+  //already instatieted the userModel at the top of this file
   var user = new User(body); //make new user object with body's email and password key value pairs as the arguments
 
   user.save().then(()=>{  //Save document, .then speicfies a success case, in which case it will generateAuthToken

@@ -1,3 +1,28 @@
+
+///bcrypt////-------
+const bcrypt = require('bcryptjs');
+
+var password = '123abc';
+//Generate a hash
+bcrypt.genSalt(10, (err, salt)=>{ //first generate salt, '10' represents amount of times to run the algorithim to generate salt, bigger value = more saftey = more time
+    bcrypt.hash(password, salt, (err, hash)=>{ //hash password after salt is gernerated, use the password and salt to genererate a hash through the callback
+      console.log('this is the hased password:', hash);
+    });
+  });
+
+//to Check if passwords match do this
+var hashedPassword = '$2a$10$1uph67JYXaoW2nKEQqJr5.bD.5gCVMt73NJu/whMoMFUFWF21ijBC';
+
+bcrypt.compare(password, hashedPassword, (err, res)=>{
+  console.log(res);
+});
+
+
+
+
+
+
+
 // const {SHA256} = require('crypto-js');
 
 // var message = 'I am user number 3';
@@ -24,14 +49,16 @@
 //   console.log('Data was changed, dont trust');
 // }
 
-const jwt = require('jsonwebtoken');
 
-var data = {
-  id:10
-};
+/////JWT//////------
+// const jwt = require('jsonwebtoken');
+//
+// var data = {
+//   id:10
+// };
 
-var token = jwt.sign(data, 'saltValue');
-console.log(token);
-
-var decoded = jwt.verify(token, 'saltValue');
-console.log('decoded', decoded);
+// var token = jwt.sign(data, 'saltValue');
+// console.log(token);
+//
+// var decoded = jwt.verify(token, 'saltValue');
+// console.log('decoded', decoded);

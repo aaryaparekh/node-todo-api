@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const bcrypt = require('bcryptjs');
 
-//A schema allows you to tack methods on. Tack the methods on, then pass the UserSchema to the UserModel defined below.
+//A schema allows you to tack methods on. Tack the methods on, then pass the schema to the model defined below.
 var UserSchema = new mongoose.Schema({
     email: {
       type: String,
@@ -49,7 +50,6 @@ UserSchema.methods.toJSON = function(){
 //Add instance methods, done by adding method to .methods, over here we are adding a new instance method called generateAuthToken
 UserSchema.methods.generateAuthToken = function() {
   var user = this; //Get the individual document
-
   var access = 'auth';
   var token = jwt.sign({_id: user._id.toHexString(), access}, 'someSecretValueToSalt').toString();
 
@@ -68,11 +68,8 @@ UserSchema.statics.findByToken = function(token){
 
 //Check to see if jwt.verify works, if it does then set decoded = to jwt.verify. If it doesn't work then catch the error.
   try{
-    decoded = jwt.verify(token, 'someSecretValueToSalt');
+    decoded = jwt.verify(token, 'someSecretValueToSalt'); //decode the token, which has the _id property to it.
   }catch(e){
-    // return new Promise((resolve, reject)=>{
-    //   reject();
-    // });
     return Promise.reject(); //Same thing as returning a new promise, and then rejecting it.
   }
 
@@ -83,6 +80,25 @@ UserSchema.statics.findByToken = function(token){
     'tokens.access': 'auth'
   });
 };
+
+//Middlewear for models and schemas:
+// .pre shows that we want to run this code before a given event, the event we want to run this before is 'save'. So everytime .save is called this code will run right before
+//middlewear to hash password using bcrypt if password isn't already hashed
+UserSchema.pre('save', function(next){
+  var user = this; //user = an individual User document. So when a user doc is saved, this code will run on that user doc.
+
+  if(user.isModified('password')){ //checks if the password variable in the doc has ever been modified, if true then run our code.
+    bcrypt.genSalt(10, (err, salt)=>{
+      bcrypt.hash(user.password, salt, (err, hash)=>{
+        user.password = hash;
+        next();
+      });
+    });
+  } else {
+    //password hasn't been modified, that means it is already hashed and we dont have to do anything
+    next();
+  }
+});
 
 var User = mongoose.model('User', UserSchema);
 
